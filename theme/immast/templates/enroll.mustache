@@ -1,0 +1,771 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_boost/columns2
+
+    Admin time setting template.
+
+    Boost 2 column layout template.
+
+    Context variables required for this template:
+    * sitename - The name of the site
+    * output - The core renderer for the page
+    * bodyattributes - attributes for the body tag as a string of html attributes
+    * sidepreblocks - HTML for the blocks
+    * hasblocks - true if there are blocks on this page
+    * navdraweropen - true if the nav drawer should be open on page load
+    * regionmainsettingsmenu - HTML for the region main settings menu
+    * hasregionmainsettingsmenu - There is a region main settings menu on this page.
+
+    Example context (json):
+    {
+        "sitename": "Moodle",
+        "output": {
+            "doctype": "<!DOCTYPE html>",
+            "page_title": "Test page",
+            "favicon": "favicon.ico",
+            "main_content": "<h1>Headings make html validators happier</h1>"
+         },
+        "bodyattributes":"",
+        "sidepreblocks": "<h2>Blocks html goes here</h2>",
+        "hasblocks":true,
+        "navdraweropen":true,
+        "regionmainsettingsmenu": "",
+        "hasregionmainsettingsmenu": false
+    }
+}}
+{{> theme_boost/head }}
+
+<body {{{ bodyattributes }}}>
+
+<style>
+.mform .fitem {
+  margin-bottom: 0px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+
+.inner-content p {
+  font-family: Segoe UI;
+  font-size: 13px;
+  line-height: 26px;
+  color: #626262;
+margin-bottom: 0.2rem;
+font-weight: 600;
+}
+
+
+.mform .fitem label {
+  font-family: Segoe UI;
+  font-size: 13px;
+  line-height: 26px;
+  color: #626262;
+  margin-bottom: 0.2rem;
+font-weight: 600;
+}
+
+.mform .fitem .col-form-label {
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: 1.5;
+  max-width: 100%;
+}
+
+.mform .fitem .align-items-start {
+  align-items: flex-start !important;
+  max-width: 100%;
+}
+
+.mform .form-inline .form-control, .mform .form-inline .custom-select {
+  max-width: 100%;
+  width: 100%;
+}
+
+.form-group .form-inline .custom-select {
+  max-width: 100%;
+}
+
+
+
+.mform .fitem .custom-select {
+   border-radius: 4px !important;
+  border: 1px solid var(--color_celeste_approx) !important;
+}
+
+
+.mform .fitem input[type="text"] {
+  border-radius: 4px !important;
+
+}
+
+.slick-prev, .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 35px !important;
+  height: 36px !important;
+  padding: 8px !important ; 
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: #000000ab !important;
+  z-index: 9;
+}
+
+.slick-prev {
+  left: 10px !important;
+  
+
+}
+
+.slick-next {
+  right: 10px !important;
+}
+
+</style>
+
+
+
+
+<div id="page-wrapper">
+
+    {{{ output.standard_top_of_body_html }}}
+
+    {{>theme_immast/header}}
+
+    <div id="page" class="container-fluid">
+<!--
+        {{{ output.full_header }}}
+-->
+                <section id="region-main" {{#hasblocks}}class="has-blocks mb-3"{{/hasblocks}} aria-label="{{#str}}content{{/str}}">
+                    {{#hasregionmainsettingsmenu}}
+                        <div class="region_main_settings_menu_proxy"></div>
+                    {{/hasregionmainsettingsmenu}}
+                    {{{ output.course_content_header }}}
+		    <!--
+		    -->
+
+<div class="container-fluid inner-content">
+  <div class="container">
+    <div class="row">
+
+<!-- Page Title -->       
+      <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+      	<h1 class="mb-4">{{course_name}}</h1>
+      </div>  
+<!-- Page Title -->        
+        
+<!-- Left Area Start -->         
+        
+      <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+      
+        <div class="coures_date"><strong>Date:</strong> {{startdate}} – {{enddate}}</div>
+        
+        <div class="mb-5">
+		<div class="slick-carousel" >
+		{{#course_images}}
+			<div>
+        			<img class="img-fluid" src="{{url}}" alt="{{course_name}}" width="962">
+			</div>
+		{{/course_images}}
+		</div>
+        </div>
+
+        <div class="sub_title">Curriculum & Structure</div>
+<!-- Curriculum Start -->       
+
+        <div class="curriculum_area">
+        	<!-- <div class="curriculum_title">Curriculum & Structure</div> -->
+            <div class="under_area">
+	    {{{course_summary}}}
+            </div>
+        </div>
+
+
+
+        <style>
+            .curriculum_area {
+                background: none !important;
+                border: none !important;
+            }
+            .curriculum_area h3{
+                color: #2f54a5 !important;
+            }
+        </style>
+<!-- Curriculum End -->        
+        
+<!-- Professional Start -->        
+<!-- <div class="sub_title">Meet Our Professional</div> -->
+<div class="sub_title">Meet our Faculty</div>
+<input type="hidden" id="sessvar" value="{{{phpsession}}}">
+
+<style>
+  .faculty-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 4rem;
+}
+
+/* Row */
+.faculty-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* Left 30% */
+.faculty-img {
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+.faculty-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Right 70% */
+.faculty-content {
+    flex: 0 0 80%;
+    max-width: 80%;
+}
+
+.faculty-name {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+/* Bio */
+.bio {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.bio a {
+    margin-left: 6px;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.faculty-row {
+    border-bottom: 1px solid #eee;
+}
+@media (max-width: 768px) {
+    .faculty-row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .faculty-img,
+    .faculty-content {
+        max-width: 100%;
+        flex: 100%;
+    }
+}
+</style>
+        
+
+<div class="faculty-list">
+
+    {{#professionals}}
+    <div class="faculty-row">
+        <!-- Left 30% Image -->
+        <div class="faculty-img">
+            <img src="{{profile_pic}}" alt="{{fullname}}">
+        </div>
+        <!-- Right 70% Content -->
+        <div class="faculty-content">
+            <div class="faculty-name">{{fullname}}</div>
+
+            <p class="bio">
+              {{{bio}}}
+            </p>
+        </div>
+    </div>
+    {{/professionals}}
+
+</div>
+<script>
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("toggle-bio")) {
+        const parent = e.target.closest(".bio");
+        const shortText = parent.querySelector(".bio-short");
+        const fullText = parent.querySelector(".bio-full");
+
+        if (fullText.style.display === "none") {
+            fullText.style.display = "inline";
+            shortText.style.display = "none";
+            e.target.innerText = " Read less";
+        } else {
+            fullText.style.display = "none";
+            shortText.style.display = "inline";
+            e.target.innerText = " Read more";
+        }
+    }
+
+});
+</script>
+        <!-- <div class="professor_area">
+            <div class="professor_img"><img src="{{professional.profile_pic}}" alt="{{professional.fullname}}" width="141" height="142"></div>
+            <div>
+                <span class="curriculum_heading">{{professional.fullname}}</span>
+                <p>
+			{{{professional.bio}}}
+		</p>
+            </div>
+        </div> -->
+<!-- Professional End -->        
+        
+<!-- 6 Reasons Start -->        
+        <div class="sub_title">6 Reasons Why Professionals Prefer This Training Course</div>
+        
+        <div class="mb-4">
+        <div class="row">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/unique-design.webp" alt="Unique Design" width="141" height="142">
+                <div class="reasons_title">Unique<br>Design</div>
+                <p>Reap the benefit of structured step-by-step learning design and comprehensive agenda that teaches A to Z of the procedure, customized to match individual learning speed.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/hands-on.webp" alt="Hands-on Practice" width="141" height="142">
+                <div class="reasons_title">Hands-on<br>Practice</div>
+                <p>Gain skills and the confidence to perform a procedure, with extensive hands-on practice on near-life animal models, physical simulators and virtual reality simulators. Learn to manage complications. Improve motor skills with unique hand-eye coordination exercises.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/accreditation.webp" alt="Accreditation Advantage" width="141" height="142">
+                <div class="reasons_title">Accreditation<br>Advantage</div>
+                <p>Accredited by The Royal College of Surgeons of England, Maharashtra Medical Council,  Indian Nursing Council and many other national & international bodies. Get continuing education points for training courses, as applicable.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/renowned.webp" alt="Renowned Experts" width="141" height="142">
+                <div class="reasons_title">Renowned<br>Experts</div>
+                <p>Learn under personal supervision and 1:1 mentoring of stalwarts of medicine & surgery, with over-the-shoulder training in labs. Spend informal time with them to gain insights on setting up your own practice, their secret tips and tricks, and more.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/infrastructure.webp" alt="World Class Simulation Infrastructure" width="141" height="142">
+                <div class="reasons_title">World Class Simulation<br>Infrastructure</div>
+                <p>Train in modern VR and Tissue Labs, equipped and laid out to simulate real Operating Theatres.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/alumni.webp" alt="Alumni Advantage" width="141" height="142">
+                <div class="reasons_title">Alumni<br>Advantage</div>
+                <p>Access world class papers, articles and updates in the vast Knowledge Repository through IMMAST’s website. Surge ahead with 1:1 mentoring and peer networking through Alumni Support groups continued for life.</p>
+                </div>
+            </div>
+            
+        </div>
+        </div>    
+<!-- 6 Reasons End -->         
+        
+<!-- Gallery Start -->         
+        <div class="sub_title">Glimpses of IMMAST</div>
+        <!-- <div class="sub_title">Gallery</div> -->
+        
+        <div class="container">
+        <div class="row">
+        
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/1.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/2.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/3.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/4.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/5.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/6.jpg" alt="" width="310" height="206">
+            </div>
+            
+        </div>
+        </div>    
+<!-- Gallery End -->         
+        
+      </div>
+
+<!-- Left Area End -->      
+      
+<!-- Right Area Start -->      
+      
+      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 offset-xxl-1">
+      
+<!-- Button Start -->      
+      <div class="button_area">
+	<!--
+      	<button type="submit" id="inquiry_button" class="border-button">Next Dates</button>
+        <button type="button" id="inquiry_button" class="border-button"><a href="/login/signup.php">Register Now!</a></button>
+	-->
+        <a href="/?redirect=0&category={{category}}" class="border-button" >Next Dates</a>
+      {{^proper_loggedin}} 
+        <a href="/login/signup.php" class="border-button" >Register Now!</a>
+    	{{/proper_loggedin}}
+      </div>
+<!-- Button End -->
+      
+<!-- Button Start -->      
+      <div class="button_area">
+      {{^proper_loggedin}} 
+        <a href="https://youtu.be/iieBuvTTEqA?si=l8tPeEdZJUF3ye8y" target="_blank" style="width:100%" class="border-button" >Click Here To Know How To Register For Courses</a>
+      {{/proper_loggedin}}
+      </div>
+<!-- Button End -->
+      
+<!-- Support Start -->         
+      <div class="upgrade">
+      	Upgrade your supporting staff’s skills to assist you better, for a nominal fee.<br>
+        <a href="/enrol/index.php?id=192" class="red_text">Click here to know more.</a> 
+      </div>
+	{{^proper_loggedin}} 
+      <div class="login_now_box d-none">
+      	Register your profile to know details of this course. <br/> <a href="/login/signup.php" class="login_now_text">REGISTER NOW</a> 
+      </div>
+	{{/proper_loggedin}}
+<!-- Support End -->
+
+<!-- Video Section Start -->
+        {{#video_url}}
+        <div class="video_title">Hear What Faculty & Participants Have to Say</div>
+        <div class="embed-responsive embed-responsive-16by9" mb-3>
+                {{{video_url}}}
+        </div>
+        {{/video_url}}
+<!-- Video Section End -->
+
+	<!-- Main Content Starts here -->
+	  {{{ output.main_content }}}
+	<!-- Main Content Ends here -->
+      
+<!-- Other Courses Start -->      
+<br/>
+
+
+
+<!-- Starting Terms and Conditions -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+
+ .pdf-page {
+            border: 1px solid black;
+            margin: 10px 0;
+       width:100%;
+       height:100%;
+        }
+
+ </style>
+<!--
+<input type="checkbox" id="t_and_c_input" > <label for="t_and_c_input" class="btn btn-link text-info" data-bs-toggle="modal" data-bs-target="#t_and_c_model"> Terms & Conditions  </label>
+-->
+
+
+<!-- Button trigger modal -->
+<!-- <a href="#" class="btn btn-link text-info" data-bs-toggle="modal" data-bs-target="#t_and_c_model">
+  Click to Accept Terms & Conditions
+</a> -->
+
+<!-- Modal -->
+<div class="modal fade" id="t_and_c_model" tabindex="-1"  data-bs-backdrop="static" aria-labelledby="t_and_c_modelLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fw-bold" id="t_and_c_modelLabel">IMMAST Terms & Conditions</h3>
+       <!--
+        <button type="button" class="btn btn-secondary btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      -->
+       </div>
+      <div class="modal-body float-left" style="text-align: left !important;" >
+
+
+<div id="pdf-container" style="overflow: scroll; height: 100vh;"></div>
+     
+<hr>
+<input type="checkbox" id="t_and_c_checkbox"> <label for="t_and_c_checkbox"> I'have read and understood the Terms & Conditions* governing my enrolment for training courses at IMMAST, and agree to abide by them. Any false information supplied by me to IMMAST shall result in cancellation of my enrolment and forfeiture of the fee.
+ </label>
+
+
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModel">Close</button>
+        <button type="button" class="btn btn-primary" id="t_and_c_accept_btn" onclick="javascript: accepted_t_and_c();" disabled>Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js"></script>
+
+<script>
+
+
+        document.querySelectorAll('input[name=profile_field_immast_terms_and_conditions]').forEach(ele => {
+            ele.classList.add(['btn' ,'btn-link' ,'text-info'])
+            ele.setAttribute('data-bs-toggle','modal')
+            ele.setAttribute('data-bs-target','#t_and_c_model')
+        })
+
+
+// Rendering of T&C PDF
+// const url = '/public/pdfs/annexure.pdf'; // Replace with your PDF URL
+const url = '/public/pdfs/Terms-condition-immast.pdf'; // Replace with your PDF URL
+ const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js';
+
+        const loadingTask = pdfjsLib.getDocument(url);
+        loadingTask.promise.then(pdf => {
+            console.log('PDF loaded');
+
+            // Loop through all pages
+            const totalPages = pdf.numPages;
+            const pdfContainer = document.getElementById('pdf-container');
+
+            for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+                pdf.getPage(pageNumber).then(page => {
+                    const scale = 4 ; // Adjust scale for rendering size
+                    const viewport = page.getViewport({ scale });
+
+                    // Create a new canvas element for each page
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'pdf-page';
+                    pdfContainer.appendChild(canvas);
+
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    // canvas.style.width = Math.floor(viewport.width * 0.4) + "px";
+                    canvas.style.height =  Math.floor(viewport.height * 0.4) + "px";
+
+                    // Render PDF page into canvas context
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport,
+                    };
+                    const renderTask = page.render(renderContext);
+                    renderTask.promise.then(() => {
+                        console.log('Page rendered: ' + pageNumber);
+                    });
+                });
+            }
+        }, reason => {
+            // PDF loading error
+            console.error(reason);
+        });
+
+
+document.getElementById('t_and_c_checkbox').addEventListener('click', (e) => {
+  var t_and_c_accept_btn = document.getElementById('t_and_c_accept_btn')
+  if (e.target.checked){
+    t_and_c_accept_btn.removeAttribute('disabled')
+  }else{
+    t_and_c_accept_btn.setAttribute('disabled','disabled')
+  }
+})
+
+
+function accepted_t_and_c (){
+   var checkBox = document.getElementById('t_and_c_checkbox')
+  if (checkBox.checked){
+    document.getElementById('closeModel').click()
+
+    document.querySelectorAll('input[name=profile_field_immast_terms_and_conditions]').forEach(ele => {
+        if (!ele.checked){
+            ele.click()
+        }
+    })
+
+	
+	//document.getElementById('send_payment_gtw_btn').removeAttribute('disabled')
+  }else{
+    //document.getElementById('send_payment_gtw_btn').setAttribute('disabled','disabled')
+  }
+}
+
+
+</script>
+
+
+
+<!-- End of Terms and Conditions -->
+
+      <div class="other_courses">
+      	<div class="courses_sub_title">Other Courses in This Specialty</div>
+        <ul class="other_courses_list">
+	{{#other_courses}}
+          <li><a href="/enrol/index.php?id={{id}}">{{fullname}} <br> ( {{startdate}} ) </a></li>
+	{{/other_courses}} 
+        </ul>
+      </div>
+<!-- Other Courses End -->         	
+        
+<!-- Review Section Start -->        
+        
+	{{#testimonials_exists}}
+        <div class="sub_title">What They Say</div>
+	{{/testimonials_exists}}
+        
+<!-- Review 1 Start -->         
+
+	{{#testimonials}}
+
+
+
+        <div class="coures_review mb-3">
+        	<div class="review_area">
+            
+            <div class="review_area">
+            	<div class="review_img">
+                	<img src="{{profile_pic}}" width="141" height="142">
+                </div>
+                
+                <div class="">
+                    <div class="review_title">{{fullname}} </div>
+                    <div class="left">
+
+			<div class="star-ratings" title="5 Stars" style="position: relative; box-sizing: border-box; display: none;">
+
+	<svg class="star-grad" style="position: absolute; z-index: 0; width: 0px; height: 0px; visibility: hidden;"><defs><linearGradient id="starGrad868761755844741" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop><stop offset="100%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop></linearGradient></defs></svg><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg>
+
+		</div></div>
+                    <!--<span>(5/5)</span>-->
+                    </div>
+                </div>
+            </div>  
+            
+            <div class="">
+            	<div class=""><img src="/designinput/HTML/About - IMMAST_files/google-icon.jpg" width="0" height="28"></div>
+            </div>
+            
+            </div>
+            
+             <p> {{testimonial}} </p>  
+             
+        </div>
+	{{/testimonials}}
+
+
+<!-- Review 1 End -->  
+
+
+<!-- Review Section End -->         
+
+
+<!-- Video Section Start -->        
+<!--
+        {{#video_url}}
+        <div class="video_title">Hear What Faculty & Participants Have to Say</div>
+        <div class="embed-responsive embed-responsive-16by9" mb-3>
+                {{{video_url}}}
+        </div>
+        {{/video_url}}
+
+-->
+
+        
+<!--
+        <div class="video_title">Hear What Faculty & Participants Have to Say </div>
+        
+        <div class="embed-responsive embed-responsive-16by9" mb-3>
+        	<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+-->
+        
+<!-- Video Section End -->          
+        
+        
+      
+      </div>
+      
+<!-- Right Area End -->       
+      
+    </div>
+    
+  </div>
+</div>
+<!-- content area --> 
+
+
+
+
+
+                    {{{ output.activity_navigation }}}
+                    {{{ output.course_content_footer }}}
+                </section>
+                {{#hasblocks}}
+                <section data-region="blocks-column" class="d-print-none" aria-label="{{#str}}blocks{{/str}}">
+                    {{{ sidepreblocks }}}
+                </section>
+                {{/hasblocks}}
+            </div>
+        </div>
+    </div>
+    {{> theme_boost/nav-drawer }}
+</div>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+{{> theme_immast/footer }}

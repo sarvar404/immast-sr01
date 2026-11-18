@@ -1,0 +1,339 @@
+
+
+
+<style type="text/css">
+
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+
+
+@media print{
+body {display:none;}
+}
+
+ul.menu-links {
+display:flex;
+
+}
+
+
+
+
+ul.menu-links li {
+list-style: none; 
+font-size: 12px;
+font-family:'Open Sans', sans-serif;
+}
+
+
+@media only screen and (min-width: 700px) {
+
+
+ul.menu-links li {
+list-style: none;
+font-size: 30px;
+}
+
+
+}
+
+
+
+</style>
+
+
+<!-- The overlay -->
+<div id="myNav" class="overlay"> 
+
+<!-- Button to close the overlay navigation --> 
+<a href="javascript:void(0)" class="closebtn" onClick="closeNav()">&times;</a> 
+
+<!-- Overlay content -->
+
+
+<div class="overlay-content">
+<ul class="menu">
+<li>  <a class="nav-link active" aria-current="page" href="https://immast.org/">Home</a></li>
+<!-- <li><a href="">Home</a></li> -->
+
+<li><a href="javascript:void(0);">About us &raquo;</a>
+		<ul class="sub-menu">
+		  <!--This works fine-->
+		  <li><a href="https://www.immast.org/about-us" title="">About IMMAST</a></li>
+		  <li><a href="https://www.immast.org/history-immast" title="">History</a></li>
+		  <li><a href="https://www.immast.org/vision-quality" title="">Vision/Quality Policy</a></li>
+		  <li><a href="https://immast.org/intellectual-property-declaration" title="">Intellectual Property Declaration</a></li>
+		  <li><a href="https://www.immast.org/our-team" title="">Our Team</a></li>
+		  <li><a href="https://www.immast.org/our-faculty" title="">Our Faculty</a></li>
+		  <li><a href="https://www.immast.org/accreditations-affiliations" title="">Accreditations & Affiliations</a></li>
+		  <li><a href="https://www.immast.org/travelling-to-the-center" title="">Travelling to the Center</a></li>
+		  <li><a href="https://www.immast.org/testimonials.php" title="">What they say about us</a></li>
+		</ul>
+</li>
+
+<li><a href="javascript:void(0);">Policies &raquo;</a>
+		<ul class="sub-menu">
+		  <!--This works fine-->
+		  
+		  <li><a href="https://www.immast.org/registrations-and-cancellations-policy" title="">Registrations and Cancellations Policy</a></li>
+		</ul>
+</li>
+
+
+<li><a href="https://immast.org/courses-workshops">Courses & Workshops	</a>
+  <!--<ul class="sub-menu">-->
+  
+  <!--  <li><a href="javascript:void(0);">Hybrid &raquo;</a>-->
+  <!--    <ul class="nested sub-menu">-->
+	<!--Here is the problem-->
+  <!--      <li><a href="" title="">Course 1</a></li>-->
+  <!--      <li><a href="" title="">Course 2</a></li>-->
+  <!--    </ul>-->
+  <!--  </li>-->
+  <!--  <li><a href="javascript:void(0);">Fellowship &raquo;</a>-->
+  <!--    <ul class="nested sub-menu">-->
+       
+  <!--      <li><a href="" title="">Course 1</a></li>-->
+  <!--      <li><a href="" title="">Course 2</a></li>-->
+  <!--    </ul>-->
+  <!--  </li>-->
+  <!--  <li><a href="javascript:void(0);">On-Site &raquo;</a>-->
+  <!--    <ul class="nested sub-menu">-->
+	
+  <!--      <li><a href="" title="">Course 1</a></li>-->
+  <!--      <li><a href="" title="">Course 2</a></li>-->
+  <!--    </ul>-->
+  <!--  </li>-->
+  <!--</ul>-->
+</li>
+
+<li><a href="/?redirect=0">Calendar</a>
+</li>
+
+<li><a href="javascript:void(0);">Collaborate with us »</a>
+  <ul class="sub-menu" style="display: none;">
+    <!--This works fine-->
+    <li><a href="" title="">Courses</a></li>
+    <li><a href="" title="">Design &amp; Development</a></li>
+    <li><a href="" title="">Equipment / Instruments</a></li>
+    <li><a href="" title="">Technology</a></li>
+    <li><a href="" title="">E learning </a></li>
+    <li><a href="" title="">Research &amp; Innovations</a></li>
+    <li><a href="https://immast.org/contact-us.php" title="">Write to Us</a></li>
+  </ul>
+</li>
+
+<!-- 
+<li><a href="javascript:void(0);">Collaborate with us &raquo;</a>
+		<ul class="sub-menu">
+		  <!--This works fine-->
+		  <li><a href="//www.immast.org/training-courses" title="">Courses</a></li>
+		  <li><a href="//www.immast.org/" title="">Design & Development</a></li>
+		  <li><a href="//www.immast.org/technology-equipment-instruments" title="">Technology, Equipment / Instruments</a></li>
+		  <li><a href="//courses.immast.org/?redirect=0" title="">E learning </a></li>
+		  <li><a href="//www.immast.org/research-innovation" title="">Research & Innovations</a></li>
+		  <li><a href="//www.immast.org/contact-us.php" title="">Write to Us</a></li>
+		</ul>
+ </li>
+    
+-->          
+
+{{#proper_loggedin}} 
+<li>
+<a class="nav-link active" aria-current="page" href="/my/">Dashboard</a>
+<a class="nav-link active" aria-current="page" href="/my/invoices.php">My Invoices</a>
+<a class="nav-link active" aria-current="page" href="/user/profile.php">Profile</a>
+</li>
+{{/proper_loggedin}}
+
+{{#role_manage}}
+<li>
+	<a class="nav-link active" aria-current="page" href="/my/reports.php"> Reports </a>
+</li>
+<li>
+  <a class="nav-link active" aria-current="page" href="/admin/search.php">Site Admin</a>
+</li>
+{{/role_manage}}
+
+
+ <li><a href="javascript:void(0);">Careers & Opportunities &raquo;</a>
+		<ul class="sub-menu">
+		  <!--This works fine-->
+		  <li><a href="" title="">Internships for Management Graduates / Communication & Media Graduates</a></li>
+		  <li><a href="https://www.immast.org/career.php" title="">Vacancies / Teaching Positions</a></li>
+		</ul>
+</li>
+	      
+
+<li><a href="javascript:void(0);">Alumni Connect »</a>
+  <ul class="sub-menu" style="display: none;">
+    <!--This works fine-->
+    <li><a href="" title="">Member Services (Complimentary)</a></li>
+    <li><a href="" title="">Register for a Course</a></li>
+            <li><a href="" title="">Book a Practice session (Tissue/Simulator) </a></li>
+            <li><a href="" title="">Request photos/Certificates – Group photo as well as individual photos (contact@immast.org)</a></li>
+            <li><a href="" title="">Access Post-Course material (Link to Knowledge Repository)</a></li>
+          </ul>
+        </li>
+        
+        <li><a href="javascript:void(0);">Knowledge Repository »</a>
+          <ul class="sub-menu" style="display: none;">
+            <!--This works fine-->
+            <li><a href="" title="">Submit article</a></li>
+            <li><a href="" title="">Blogs/Newsletters</a></li>
+            <li><a href="" title="">Videos</a></li>
+            <li><a href="" title="">Pre Course/Post Course</a></li>
+          </ul>
+        </li>
+        
+        <li><a href="">FAQs</a></li>
+        
+        <li><a href="">Contact Us</a></li>
+        
+        
+        <!--<li>Menu-->
+        <!--  <ul class="sub-menu">-->
+            <!--This works fine-->
+        <!--    <li>Sub Menu-->
+        <!--      <ul class="nested sub-menu">-->
+                <!--Here is the problem-->
+        <!--        <li>Sub sub menu-->
+        <!--          <ul class="nested sub-menu">-->
+                    <!--Here is the problem too-->
+        <!--            <li>Sub sub sub menu</li>-->
+        <!--          </ul>-->
+        <!--        </li>-->
+        <!--      </ul>-->
+        <!--    </li>-->
+        <!--  </ul>-->
+        <!--</li>-->
+         
+      </ul>
+    
+</div>
+
+
+
+
+
+
+
+<!-- <div class="overlay-content">
+  <a class="nav-link active" aria-current="page" href="/?redirect=0">Home</a>
+  <a class="nav-link active" aria-current="page" href="/my/">Dashboard</a>
+  <a class="nav-link" aria-current="page" href="https://courses.immast.org/?redirect=0">Courses List</a>
+  <a class="nav-link active" aria-current="page" href="/user/profile.php">Profile</a>
+ 
+  <a class="nav-link active" aria-current="page" href="/my/invoices.php">My Invoices</a>
+
+ <a class="nav-link active" aria-current="page" href="/user/preferences.php">Preferences</a>
+
+{{#role_manage}}
+  <a class="nav-link active" aria-current="page" href="/admin/search.php">Site Admin</a>
+{{/role_manage}}
+
+
+  <a class="nav-link" aria-current="page" href="https://immast.org/about-us.php">About Us</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/courses-workshops">Courses & Workshops	</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/collaborate-with-us">Collaborate With Us</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/career.php">Careers &amp; Opportunities</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/alumni-connect">Alumni Connect</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/knowledge-repository">Knowledge Repository</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/faqs.php">FAQs</a>
+  <a class="nav-link" aria-current="page" href="https://immast.org/contact-us.php">Contact Us</a>
+</div> -->
+
+
+
+
+</div>
+
+<!-- Header Start -->
+
+<div class="container-fluid inner-header">
+  <div class="container">
+    <nav class="navbar navbar-light animated bounceInDown" aria-label="Main Navigation">
+      <div class="container-fluid"> <a class="navbar-brand" href="https://immast.org/" title="IMMAST" style="width:250px;"><img src="https://immast.org/assets/images/immast-logo.png" alt="IMMAST" class="d-block d-sm-none" style="width:250px;"></a> 
+        <!-- menu links -->
+        <ul class="menu-links">
+
+{{#proper_loggedin}}
+	  <li> <a href="#" >Logged-in as {{username}}</a> </li>
+          <li> <a href="/login/logout.php?sesskey={{sesskey}}"> / Logout </a></li>
+{{/proper_loggedin}}
+
+
+{{^proper_loggedin}}
+  <li><a href="/login/index.php">Login / Signup</a></li>
+{{/proper_loggedin}}
+
+
+          <li><a href="//www.immast.org/virtual-tour/?linkid=virtual-tour">Virtual Tour</a></li>
+
+        </ul>
+        <a class="navbar-brand" href="https://immast.org/"><img src="https://immast.org/assets/images/logo.svg" alt="IMMAST" id="main-logo" class="main-header-logo" style="display: none;"></a> 
+        <!--<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" onclick="openNav()"></span>
+          </button>--> 
+        
+	<div style="display: flex;align-items: center;" >
+        	<span class="menu_text">Menu</span>
+		<span style="font-size:30px;cursor:pointer; color:#fff;" onClick="openNav()">&#9776;</span>
+	</div>
+
+        <div class="navbar-collapse collapse animated bounceInRight" id="navbarsExample01" style="">
+          <ul class="navbar-nav me-auto mb-2">
+            <li class="nav-item"> <a class="nav-link active" aria-current="page" href="https://immast.org/">Home</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="https://immast.org/about-us.php">About Us</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="#">Training and Skill Development</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="#">Collaborate with us</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="https://immast.org/career.php">Careers &amp; Opportunities</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="#">Alumni Connect</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="#">Knowledge Repository</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="https://immast.org/faqs.php">FAQs</a> </li>
+            <li class="nav-item"> <a class="nav-link" aria-current="page" href="https://immast.org/contact-us.php">Contact Us</a> </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- Inner Banner -->
+<div class="container-fluid inner-banner"> <img src="https://immast.org/assets/images/inner-banner.jpg" alt=""> 
+  
+<!-- breadcrumb -->
+  <div class="container">
+    <div class="page-title">
+      <!-- <div class="title">Certificate Course</div> -->
+      <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="https://immast.org/">Home</a></li>
+          <!--<li class="breadcrumb-item"><a href="#">Coures</a></li>-->
+          <li class="breadcrumb-item active" aria-current="page">Courses</li>
+        </ol>
+      </div>
+    </div>
+    
+<!-- logo --> 
+    <a class="navbar-brand" href="https://immast.org/" title="IMMATS" style="position:absolute; top: 45%; margin-left: 180px; z-index:1;"><img src="https://immast.org/assets/images/immast-logo.png" alt="IMMAST" style="width:450px;" class="d-none d-sm-block"></a> </div>
+  <div class="gradient-overlay-bottom"> </div>
+</div>
+
+
+
+<script>
+
+function openNav() {
+  document.getElementById("myNav").style.width = "100%";
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
+
+
+</script>
+
+<!-- Header End -->

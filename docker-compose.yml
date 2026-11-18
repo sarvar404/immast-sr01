@@ -1,0 +1,39 @@
+services:
+  moodle:
+    build: .
+    ports:
+      - "3010:80"
+    volumes:
+      # Mount the current directory so dev changes reflect immediately
+      - .:/var/www/html
+      - moodledata:/var/www/moodledata
+    environment:
+      - DB_HOST=db
+      - DB_NAME=immast_mdl_db
+      - DB_USER=immast_mdl_user
+      - DB_PASS=q5kvsrQQEMrapHUH
+      - MOODLE_DATAROOT=/var/www/moodledata
+      - MOODLE_DOMAIN=${MOODLE_DOMAIN}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: immast_mdl_db
+      POSTGRES_USER: immast_mdl_user
+      POSTGRES_PASSWORD: q5kvsrQQEMrapHUH
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token eyJhIjoiYWJjZjI4MTcwYjVmYzRhZTMxNTU0NjdlODZkNGNjMmEiLCJ0IjoiMjJkODUyNDEtYzFkZi00MmZmLTljOTctNDYxYjE1ZjA0M2IxIiwicyI6Ik0yWmhZelU1Wm1JdFpXVmhaQzAwTldOa0xXSXpZbUV0TldNeU9Ua3hNamxpTXpRNSJ9
+    depends_on:
+      - moodle
+
+volumes:
+  moodledata:
+  dbdata:

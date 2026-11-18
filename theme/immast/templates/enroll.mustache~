@@ -1,0 +1,485 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_boost/columns2
+
+    Admin time setting template.
+
+    Boost 2 column layout template.
+
+    Context variables required for this template:
+    * sitename - The name of the site
+    * output - The core renderer for the page
+    * bodyattributes - attributes for the body tag as a string of html attributes
+    * sidepreblocks - HTML for the blocks
+    * hasblocks - true if there are blocks on this page
+    * navdraweropen - true if the nav drawer should be open on page load
+    * regionmainsettingsmenu - HTML for the region main settings menu
+    * hasregionmainsettingsmenu - There is a region main settings menu on this page.
+
+    Example context (json):
+    {
+        "sitename": "Moodle",
+        "output": {
+            "doctype": "<!DOCTYPE html>",
+            "page_title": "Test page",
+            "favicon": "favicon.ico",
+            "main_content": "<h1>Headings make html validators happier</h1>"
+         },
+        "bodyattributes":"",
+        "sidepreblocks": "<h2>Blocks html goes here</h2>",
+        "hasblocks":true,
+        "navdraweropen":true,
+        "regionmainsettingsmenu": "",
+        "hasregionmainsettingsmenu": false
+    }
+}}
+{{> theme_boost/head }}
+
+<body {{{ bodyattributes }}}>
+
+<style>
+.mform .fitem {
+  margin-bottom: 0px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+
+.inner-content p {
+  font-family: Segoe UI;
+  font-size: 13px;
+  line-height: 26px;
+  color: #626262;
+margin-bottom: 0.2rem;
+font-weight: 600;
+}
+
+
+.mform .fitem label {
+  font-family: Segoe UI;
+  font-size: 13px;
+  line-height: 26px;
+  color: #626262;
+  margin-bottom: 0.2rem;
+font-weight: 600;
+}
+
+.mform .fitem .col-form-label {
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: 1.5;
+  max-width: 100%;
+}
+
+.mform .fitem .align-items-start {
+  align-items: flex-start !important;
+  max-width: 100%;
+}
+
+.mform .form-inline .form-control, .mform .form-inline .custom-select {
+  max-width: 100%;
+  width: 100%;
+}
+
+.form-group .form-inline .custom-select {
+  max-width: 100%;
+}
+
+
+
+.mform .fitem .custom-select {
+   border-radius: 4px !important;
+  border: 1px solid var(--color_celeste_approx) !important;
+}
+
+
+.mform .fitem input[type="text"] {
+  border-radius: 4px !important;
+
+}
+
+.slick-prev, .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 35px !important;
+  height: 36px !important;
+  padding: 8px !important ; 
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: #000000ab !important;
+  z-index: 9;
+}
+
+.slick-prev {
+  left: 10px !important;
+  
+
+}
+
+.slick-next {
+  right: 10px !important;
+}
+
+</style>
+
+
+
+
+<div id="page-wrapper">
+
+    {{{ output.standard_top_of_body_html }}}
+
+    {{>theme_immast/header}}
+
+    <div id="page" class="container-fluid">
+<!--
+        {{{ output.full_header }}}
+-->
+                <section id="region-main" {{#hasblocks}}class="has-blocks mb-3"{{/hasblocks}} aria-label="{{#str}}content{{/str}}">
+                    {{#hasregionmainsettingsmenu}}
+                        <div class="region_main_settings_menu_proxy"></div>
+                    {{/hasregionmainsettingsmenu}}
+                    {{{ output.course_content_header }}}
+		    <!--
+		    -->
+
+<div class="container-fluid inner-content">
+  <div class="container">
+    <div class="row">
+
+<!-- Page Title -->       
+      <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+      	<h1 class="mb-4">{{course_name}}</h1>
+      </div>  
+<!-- Page Title -->        
+        
+<!-- Left Area Start -->         
+        
+      <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+      
+        <div class="coures_date"><strong>Date:</strong> {{startdate}} – {{enddate}}</div>
+        
+        <div class="mb-5">
+		<div class="slick-carousel" >
+		{{#course_images}}
+			<div>
+        			<img class="img-fluid" src="{{url}}" alt="{{course_name}}" width="962">
+			</div>
+		{{/course_images}}
+		</div>
+        </div>
+
+        <div class="sub_title">Course Brief</div>
+        <div class="curriculum_area">
+        	<div class="curriculum_title">Synopsis of course</div>
+            <div class="under_area">
+	    {{{short_descr}}}
+            </div>
+        </div>
+       
+        <div class="sub_title">About The Training Course</div>
+<!-- Curriculum Start -->       
+
+	{{^proper_loggedin}} 
+        <div class="curriculum_area">
+        	<div class="curriculum_title">Curriculum & Structure</div>
+            <div class="under_area">
+	    <h3>Please enroll to view details.</h3>
+            </div>
+        </div>
+	{{/proper_loggedin}}
+	{{#proper_loggedin}} 
+        <div class="curriculum_area">
+        	<div class="curriculum_title">Curriculum & Structure</div>
+            <div class="under_area">
+	    {{{course_summary}}}
+            </div>
+        </div>
+	{{/proper_loggedin}}
+
+
+
+<!-- Curriculum End -->        
+        
+<!-- Professional Start -->        
+        <div class="sub_title">Meet Our Professional</div>
+        
+        <div class="professor_area">
+            <div class="professor_img"><img src="/designinput/HTML/About - IMMAST_files/profeser.jpg" alt="Jason Furman" width="141" height="142"></div>
+            <div>
+                <span class="curriculum_heading">Jason Furman</span>
+                <p>Master of Computer Applications (MCA) is a two year professional post-graduate programme for candidates wanting to delve deeper into the world of computer application development with the help of learning modern programming language. The programme is a blend of both theoretical and practical knowledge.</p>
+            </div>
+        </div>
+<!-- Professional End -->        
+        
+<!-- 6 Reasons Start -->        
+        <div class="sub_title">6 Reasons Why Professionals Prefer This Training Course</div>
+        
+        <div class="mb-4">
+        <div class="row">
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/unique-design.webp" alt="Unique Design" width="141" height="142">
+                <div class="reasons_title">Unique<br>Design</div>
+                <p>Reap the benefit of structured step-by-step learning design and comprehensive agenda that teaches A to Z of the procedure, customized to match individual learning speed.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/hands-on.webp" alt="Hands-on Practice" width="141" height="142">
+                <div class="reasons_title">Hands-on<br>Practice</div>
+                <p>Gain skills and the confidence to perform a procedure, with extensive hands-on practice on near-life animal models, physical simulators and virtual reality simulators. Learn to manage complications. Improve motor skills with unique hand-eye coordination exercises.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/accreditation.webp" alt="Accreditation Advantage" width="141" height="142">
+                <div class="reasons_title">Accreditation<br>Advantage</div>
+                <p>Get CPD points from The Royal College of Surgeons of England and CME points from Maharashtra Medical Council.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/renowned.webp" alt="Renowned Experts" width="141" height="142">
+                <div class="reasons_title">Renowned<br>Experts</div>
+                <p>Learn under personal supervision and 1:1 mentoring of stalwarts of medicine & surgery, with over-the-shoulder training in labs. Spend informal time with them to gain insights on setting up your own practice, their secret tips and tricks, and more.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/infrastructure.webp" alt="World Class Simulation Infrastructure" width="141" height="142">
+                <div class="reasons_title">World Class Simulation<br>Infrastructure</div>
+                <p>Train in modern VR and Tissue Labs, equipped and laid out to simulate real Operating Theatres.</p>
+                </div>
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            	<div class="reasons_area">
+                <img src="/designinput/HTML/About - IMMAST_files/icon/alumni.webp" alt="Alumni Advantage" width="141" height="142">
+                <div class="reasons_title">Alumni<br>Advantage</div>
+                <p>Access world class papers, articles and updates in the vast Knowledge Repository through IMMAST’s website. Surge ahead with 1:1 mentoring and peer networking through Alumni Support groups continued for life.</p>
+                </div>
+            </div>
+            
+        </div>
+        </div>    
+<!-- 6 Reasons End -->         
+        
+<!-- Gallery Start -->         
+        <div class="sub_title">Gallery</div>
+        
+        <div class="container">
+        <div class="row">
+        
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/1.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/2.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/3.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/4.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/5.jpg" alt="" width="310" height="206">
+            </div>
+            
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 mt-3 mb-3">
+            	<img class="img-fluid" src="/designinput/HTML/About - IMMAST_files/gallery/6.jpg" alt="" width="310" height="206">
+            </div>
+            
+        </div>
+        </div>    
+<!-- Gallery End -->         
+        
+      </div>
+
+<!-- Left Area End -->      
+      
+<!-- Right Area Start -->      
+      
+      <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 offset-xxl-1">
+      
+<!-- Button Start -->      
+      <div class="button_area">
+	<!--
+      	<button type="submit" id="inquiry_button" class="border-button">Next Dates</button>
+        <button type="button" id="inquiry_button" class="border-button"><a href="/login/signup.php">Register Now!</a></button>
+	-->
+        <a href="/?redirect=0&category={{category}}" class="border-button" >Next Dates</a>
+	
+        <a href="/login/signup.php" class="border-button" >Signin Now!</a>
+      </div>
+<!-- Button End -->
+      
+<!-- Support Start -->         
+      <div class="upgrade">
+      	Upgrade your supporting staff’s skills to assist you better, for a nominal fee.<br>
+        <a href="#" class="red_text">Click here to know more.</a> 
+      </div>
+<!-- Support End -->
+	<!-- Main Content Starts here -->
+	  {{{ output.main_content }}}
+	<!-- Main Content Ends here -->
+      
+<!-- Other Courses Start -->      
+<br/>
+      <div class="other_courses">
+      	<div class="courses_sub_title">Other Courses in This Specialty</div>
+        
+        <ul class="other_courses_list">
+          <li><a href="">Certificate Course in Functional Endoscopic Sinus Surgery</a></li>
+          <li><a href="">Master Course in Minimal Invasive Proctology</a></li>
+          <li><a href="">Certificate Course in Functional Endoscopic Sinus Surgery</a></li>
+          <li><a href="">Master Course in Minimal Invasive Proctology</a></li>
+          <li><a href="">Master Course in Minimal Invasive Proctology</a></li>
+          <li><a href="">Certificate Course in Functional Endoscopic Sinus Surgery</a></li>
+          <li><a href="">Master Course in Minimal Invasive Proctology</a></li>
+        </ul>
+      </div>
+<!-- Other Courses End -->         	
+        
+<!-- Review Section Start -->        
+        
+        <div class="sub_title">What They Say</div>
+        
+<!-- Review 1 Start -->         
+        <div class="coures_review mb-3">
+        	<div class="review_area">
+            
+            <div class="review_area">
+            	<div class="review_img">
+                	<img src="/designinput/HTML/About - IMMAST_files/profeser.jpg" width="141" height="142">
+                </div>
+                
+                <div class="">
+                    <div class="review_title">Akshat Kumar</div>
+                    <div class="left"><div class="star-ratings" title="5 Stars" style="position: relative; box-sizing: border-box; display: inline-block;"><svg class="star-grad" style="position: absolute; z-index: 0; width: 0px; height: 0px; visibility: hidden;"><defs><linearGradient id="starGrad868761755844741" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop><stop offset="100%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop></linearGradient></defs></svg><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div></div>
+                    <!--<span>(5/5)</span>-->
+                    </div>
+                </div>
+            </div>  
+            
+            <div class="">
+            	<div class=""><img src="/designinput/HTML/About - IMMAST_files/google-icon.jpg" width="27" height="28"></div>
+            </div>
+            
+            </div>
+            
+             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>  
+             
+        </div>
+<!-- Review 1 End -->  
+
+<!-- Review 2 Start -->          
+        <div class="coures_review mb-3">
+        	<div class="review_area">
+            
+            <div class="review_area">
+            	<div class="review_img">
+                	<img src="/designinput/HTML/About - IMMAST_files/profeser.jpg" width="141" height="142">
+                </div>
+                
+                <div class="">
+                    <div class="review_title">Akshat Kumar</div>
+                    <div class="left"><div class="star-ratings" title="5 Stars" style="position: relative; box-sizing: border-box; display: inline-block;"><svg class="star-grad" style="position: absolute; z-index: 0; width: 0px; height: 0px; visibility: hidden;"><defs><linearGradient id="starGrad868761755844741" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-first" style="stop-color: rgb(255, 83, 61); stop-opacity: 1;"></stop><stop offset="0%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop><stop offset="100%" class="stop-color-final" style="stop-color: rgb(203, 211, 227); stop-opacity: 1;"></stop></linearGradient></defs></svg><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px; padding-right: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div><div class="star-container" style="position: relative; display: inline-block; vertical-align: top; padding-left: 0px;"><svg viewBox="0 0 51 48" class="widget-svg" style="width: 15px; height: 15px; transition: transform 0.2s ease-in-out 0s;"><path class="star" style="fill: rgb(255, 83, 61); transition: fill 0.2s ease-in-out 0s;" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"></path></svg></div></div>
+                    <!--<span>(5/5)</span>-->
+                    </div>
+                </div>
+            </div>  
+            
+            <div class="">
+            	<div class=""><img src="/designinput/HTML/About - IMMAST_files/google-icon.jpg" width="27" height="28"></div>
+            </div>
+            
+            </div>
+            
+             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>  
+             
+             
+        </div>
+        
+<!-- Review 2 End -->
+
+<!-- Review Section End -->         
+
+<!-- Video Section Start -->        
+        
+        <div class="video_title">Hear What Faculty & Participants Have to Say </div>
+        
+        <div class="embed-responsive embed-responsive-16by9" mb-3>
+        	<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        
+<!-- Video Section End -->          
+        
+        
+      
+      </div>
+      
+<!-- Right Area End -->       
+      
+    </div>
+    
+  </div>
+</div>
+<!-- content area --> 
+
+
+
+
+
+                    {{{ output.activity_navigation }}}
+                    {{{ output.course_content_footer }}}
+                </section>
+                {{#hasblocks}}
+                <section data-region="blocks-column" class="d-print-none" aria-label="{{#str}}blocks{{/str}}">
+                    {{{ sidepreblocks }}}
+                </section>
+                {{/hasblocks}}
+            </div>
+        </div>
+    </div>
+    {{> theme_boost/nav-drawer }}
+</div>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+{{> theme_immast/footer }}

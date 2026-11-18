@@ -1,0 +1,32 @@
+[[setting:customcss]]
+
+
+        .query-btn {
+            line-height: var(--bs-body-line-height);
+            text-align: var(--bs-body-text-align);
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+            text-decoration: none;
+            position: fixed;
+            font-weight: bold;
+            font-size: 20px;
+            right: -229px;
+            top: 65vh;
+            padding: 11px 24px;
+            color: white;
+            background-color: #ff7b00;
+            transform-origin: 0 0;
+            transform: rotate(-90deg);
+            box-shadow: 0px 3px 8.5px rgba(0, 0, 0, 0.438);
+            border-radius: 10px 10px 0px 0px;
+            border: none !important;
+	    text-decoration:none;
+        }
+
+	.query-btn:hover{
+	 text-decoration:none;
+	 color: white;
+	 background-color: #3F63B2;
+	}

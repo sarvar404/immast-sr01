@@ -1,0 +1,204 @@
+<?php
+	global $USER;
+	$tid = time();
+	$post_data = array (
+		"tid" =>  $tid ,
+		"merchant_id" => $Merchant_Id ,
+		"order_id" => $Order_Id ,
+		"amount" => $Amount ,
+		"currency" => $currency ,
+		"redirect_url" => $Redirect_Url ,
+		"cancel_url" => $Redirect_Url ,
+		"language" => "EN" ,
+		"merchant_param" => $Merchant_Param ,
+		"merchant_param1" =>  $Merchant_Param
+	);
+
+	$merchant_data='';
+
+	$working_key= $WorkingKey;
+	$access_code= $AccessCode;
+
+	foreach ($post_data as $key => $value){
+		$merchant_data .= $key .'=' .$value. '&';
+	}
+
+	$encrypted_data=encrypt($merchant_data,$working_key); // Method for encrypting the data.
+ 	$encrypted_tracking_data=encrypt( json_encode( $merchant_json_data )  ,$working_key);
+?>
+
+<div align="right">
+<p><?php print_string("paymentrequired") ?></p>
+
+<div id="price_block" style="opacity:100;">Loading pricing ... </div>
+
+<input id="coupon_code" type="text" size="10" placeholder="Coupon code">
+<input type="button" value="Check Coupon" onClick="javascript: check_coupon();"/>
+<div id="new_price">&nbsp;</div>
+<div id="coupon_message">&nbsp;</div>
+
+
+<form action="<?=$ccavenueurl?>" method="post" id="submitForm">
+	<input type=hidden name=encRequest id="encrypted_data" value="<?= $encrypted_data ?>" >
+	<input type=hidden name=access_code value="<?= $access_code ?>" >
+	<input type="submit" value="<?php print_string("sendpaymentbutton", "enrol_ccavenue"); ?>" />
+</form>
+
+
+	<script>
+
+
+	var misCourseFee = 0;
+	var misAppliedDiscount = 0;
+	var misDiscountPrice = 0;
+	var misTax = 0;
+	var misGross = 0;
+
+document.getElementById("submitForm").addEventListener("submit", (event) => {
+    event.preventDefault()
+    var coupon_code = $('#coupon_code').val();
+    var url = "/api/capture_order"
+    var obj = {
+	'user_id' : <?php echo $USER->id ?>, 
+	'coupon' : coupon_code,
+        'course_id': '<?=  $course_id ?>',
+        'order_id': '<?=  $Order_Id ?>',
+        'encrypted_data': '<?= $encrypted_tracking_data ?>',
+	'misCourseFee': misCourseFee,
+	'misAppliedDiscount': misAppliedDiscount,
+	'misDiscountPrice': misDiscountPrice,
+	'misTax': misTax,
+	'misGross': misGross
+    };
+
+    fetch(url, {
+        body: JSON.stringify(obj),
+        method: 'POST',
+        mode: 'no-cors'
+    }).then(res => res.json()).then(res => {
+        var record_id = res.record_id;
+        console.log(record_id);
+        if (record_id !== null && record_id !== undefined && record_id !== "" && record_id > 0) {
+            event.target.submit();
+        } else {
+            alert("Kindly retry!");
+        }
+    }).catch((error) => {
+        alert("Contact to Technical Department");
+        console.log("Error: ", error)
+        console.log("Error: unable to send data to the server")
+    });
+
+})
+
+
+
+
+
+
+		var discount = 0;
+		var localisedAmount = <?php echo $localisedAmount ? $localisedAmount : $Amount ?>;
+
+		function fill_prices () {
+			var currency        = '<?php echo $currency ?>' ;
+			var discountedPrice = localisedAmount - discount ;
+			appliedDiscount = discount;
+
+			var tax_rate        = <?php echo $tax_rate ?>;
+			var tax 	    = Number.parseFloat( tax_rate * discountedPrice ).toFixed(2)
+			var payable	    = Number(discountedPrice + parseFloat(tax)).toFixed(2) ;
+
+			misCourseFee = localisedAmount ;
+			misAppliedDiscount = discount;
+			misDiscountPrice = discountedPrice;
+			misTax = tax;
+			misGross = payable;
+
+			var tax_line = '';
+			if ( tax > 0) {
+				tax_line = `<p><b>Tax (GST ${tax_rate * 100}%) : ${currency} ${tax}</b></p>`;
+			}
+
+			var discount_line = '';
+			if ( discount > 0) {
+				discount_line = `
+				<p><b>Discount: ${currency} ${discount}</b></p>
+				<p><b>Discounted Price: ${currency} ${discountedPrice}</b></p>
+				`;
+
+			}
+
+			var pricing_html = `
+				<p><b>Price: ${currency} ${localisedAmount}</b></p>
+				${discount_line}
+				${tax_line}
+				<p><b><h6>Payable Amount: <b>${currency} ${payable}</b></h6></b></p>
+			`;
+			$('#price_block').html ( pricing_html);
+		}
+
+
+
+		function check_coupon() {
+			var coupon_code = $('#coupon_code').val();
+			var encrypted_data = document.getElementById('encrypted_data');
+
+			var formData = {
+				coupon: coupon_code ,
+				userid: <?php echo $USER->id ?> ,
+				courseid: <?php echo $course->id  ?> ,
+				enc_val : "<?php echo $encrypted_data ?>",
+
+			};
+			$('#coupon_message').html('&nbsp;');
+			$.ajax({
+				url: 'https://courses.immast.org/api/check_coupons' , 
+				type : "POST",
+				data : formData ,
+
+				xhrFields: {withCredentials: true},
+				crossDomain: true,
+				success : function(data) {
+					console.log ('got data: ' + JSON.stringify(data));
+
+					//  {"dis_mode":"PCT","dis_value":"15","msg":"coupon code is matched","status":"OK"}
+					//  {"msg":"The coupon code 'ABC12342222' is invalid\n","status":"NOT_OK"}
+
+
+					if (data.status !== 'OK') {
+						$('#coupon_message').fadeIn(10);
+								error_msg = data.msg
+								$('#coupon_message').html(`<h5>${error_msg}</h5>`);
+						$('#coupon_message').fadeOut(2000);
+						discount = 0;
+					} else {
+						$('#coupon_message').fadeIn(10);
+						$('#coupon_message').html('<h6><font color="green">Congratulations! the coupon code is valid, please use it for enrollemnt</font></h6>');
+						$('#coupon_message').fadeOut(3000);
+						var dis_value = data.dis_value ;
+
+						if ( data.dis_mode === 'PCT' ) {
+							discount = localisedAmount * dis_value / 100.0 ;
+						}
+						if ( data.dis_mode === 'ABS'  ) {
+							discount = dis_value ;
+						}
+						discount = Number(discount).toFixed(2) ;
+						
+						if (encrypted_data  && (data.encrypted_val !==  ""  && data.encrypted_val !== null && data.encrypted_val !== undefined)) {
+  						  	encrypted_data.value = data.encrypted_val;
+						}
+					}
+					fill_prices();
+				},
+				error: function(err) {
+					console.log(err);
+				}
+			});
+			return false;
+		}
+
+		fill_prices();
+		
+	</script>
+</div>
