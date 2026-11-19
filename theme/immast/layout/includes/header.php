@@ -81,6 +81,15 @@ $sphone = get_string('phone', 'theme_immast');
 $semail = get_string('email', 'theme_immast');
 $sgetsocial = get_string('get_social', 'theme_immast');
 $infolink = theme_immast_infolink();
+$sitehost = strtolower((string)parse_url($CFG->wwwroot, PHP_URL_HOST));
+$localhosts = ['localhost', '127.0.0.1', '::1'];
+$islocalmoodle = in_array($sitehost, $localhosts, true);
+$homeurl = $islocalmoodle
+    ? rtrim($CFG->wwwroot, '/') . '/?redirect=0'
+    : 'https://immast.org/';
+$virtualtoururl = $islocalmoodle
+    ? rtrim($CFG->wwwroot, '/') . '/?redirect=0'
+    : 'https://www.immast.org/virtual-tour/?linkid=virtual-tour';
 
 
 $templatecontext = [
@@ -113,6 +122,9 @@ $templatecontext = [
     "s_phone" => $sphone,
     "s_email" => $semail,
     "s_get_social" => $sgetsocial,
+    "homeurl" => $homeurl,
+    "virtualtoururl" => $virtualtoururl,
+    "islocalmoodle" => $islocalmoodle,
     "customclass" => $class
 ];
 

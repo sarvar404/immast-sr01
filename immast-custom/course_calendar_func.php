@@ -7,7 +7,7 @@ function course_calendar_data() {
 	global $DB;
 
 	// $sql = "select cat.id,cat.name , string_agg(distinct mt.name,',') as category_type from mdl_tag_instance mti left join mdl_tag mt on (mti.tagid=mt.id) join  mdl_course c on(c.id=mti.itemid) join mdl_course_categories cat on ( c.category=cat.id)  group by cat.id,cat.name order by cat.name; ";
-	$sql = "select cat.id,cat.name , string_agg(distinct mt.name,',') as category_type from mdl_tag_instance mti left join mdl_tag mt on (mti.tagid=mt.id) left join  mdl_course c on(c.id=mti.itemid and c.visible=1 ) left join mdl_course_categories cat on ( c.category=cat.id) where cat.visible=1  and length (mt.name) = 2  group by cat.id,cat.name order by cat.sortorder ; ";
+	$sql = "select cat.id,cat.name , string_agg(distinct mt.name,',') as category_type from mdl_tag_instance mti left join mdl_tag mt on (mti.tagid=mt.id) left join  mdl_course c on(c.id=mti.itemid and c.visible=1 ) left join mdl_course_categories cat on ( c.category=cat.id) where cat.visible=1  and length (mt.name) = 2  group by cat.id,cat.name,cat.sortorder order by cat.sortorder ; ";
 	$categories = $DB->get_recordset_sql($sql);
 
 

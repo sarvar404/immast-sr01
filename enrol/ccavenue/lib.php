@@ -259,7 +259,7 @@ class enrol_ccavenue_plugin extends enrol_plugin {
 
 		if ( $coupon_code) {
 
-			$url = "https://courses.immast.org/api/check_coupon";
+			$url = rtrim($CFG->wwwroot, '/') . "/api/check_coupon";
 			//Make 
 			$requestDataObject = [ "coupon" => $coupon_code, "userid" => $USER->userid  ];
 			//Serialize object to json.

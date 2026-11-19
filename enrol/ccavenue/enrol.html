@@ -152,7 +152,7 @@ document.getElementById("submitForm").addEventListener("submit", (event) => {
 			};
 			$('#coupon_message').html('&nbsp;');
 			$.ajax({
-				url: 'https://courses.immast.org/api/check_coupons' , 
+				url: '<?php echo rtrim($CFG->wwwroot, "/"); ?>/api/check_coupons' ,
 				type : "POST",
 				data : formData ,
 

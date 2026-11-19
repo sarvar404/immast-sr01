@@ -1,0 +1,31 @@
+services:
+  moodle-php74:
+    build:
+      context: .
+      dockerfile: Dockerfile.php74.local
+    image: immast-local-moodle-php74
+    container_name: immast-local-moodle-php74
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    volumes:
+      - .:/var/www/html
+      - type: bind
+        source: C:/moodledata
+        target: /var/www/moodledata
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_NAME: immast_mdl_db
+      DB_USER: immast_mdl_user
+      DB_PASS: immast_mdl_user
+      MOODLE_DATAROOT: /var/www/moodledata
+      MOODLE_URL: http://localhost:8081
+      MOODLE_SSLPROXY: "0"
+      MOODLE_COOKIE_DOMAIN: localhost
+      MOODLE_SMTP_HOST: ${SMTP_HOST:-email-smtp.ap-south-1.amazonaws.com}
+      MOODLE_SMTP_PORT: ${SMTP_PORT:-587}
+      MOODLE_SMTP_SECURE: ${SMTP_SECURE:-false}
+      MOODLE_SMTP_FROM: ${SMTP_FROM:-no-reply@sunpharma.com}
+      MOODLE_SMTP_USERNAME: ${SMTP_USERNAME:-}
+      MOODLE_SMTP_PASSWORD: ${SMTP_PASSWORD:-}

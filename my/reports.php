@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    $url =    "https://courses.immast.org/api/$uri_part?registration_type=$registration_type&start_date=$startdate&end_date=$enddata&mobile_num=$mobile_num&idnumber=$idnumber";
+    $url = rtrim($CFG->wwwroot, '/') . "/api/$uri_part?registration_type=$registration_type&start_date=$startdate&end_date=$enddata&mobile_num=$mobile_num&idnumber=$idnumber";
     // $url =    "http://10.100.103.3:10991/download_registration_report?registration_type=all&start_date=2024-02-13&end_date=2024-05-13";
     $api_token = "tk16Q80LnJE4MOUsTzrldKb9ZFojicYpGgANS2Pva7DChVI5x";
     $ch = curl_init($url);

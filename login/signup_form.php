@@ -103,7 +103,7 @@ class login_signup_form extends moodleform implements renderable, templatable {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    let submitBtn = document.querySelector('input[type=submit]');
+    let submitBtn = document.getElementById('id_submitbutton');
     if (submitBtn) submitBtn.disabled = true;
 
     let otpInput  = document.getElementById('id_otp');
@@ -118,58 +118,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 window.sendOTP = function () {
-
     let email = document.getElementById('id_email').value;
-    let mobileNum = '9999999999'; // static number
     let sendBtn = document.getElementById('id_sendotp');
-
     if (!email) { alert('Please enter your email'); return; }
-
     sendBtn.disabled = true;
-    sendBtn.innerText = 'Sending...';
-
-    fetch('/api/send_otp', {
+    sendBtn.textContent = 'Sending...';
+    let baseUrl = M.cfg.wwwroot.replace(/\\/$/, '');
+    fetch(baseUrl + '/api/send_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({
             email: email,
-            mobileNum: mobileNum
+            sesskey: M.cfg.sesskey
         })
     })
-    .then(r => r.json())
-    .then(d => {
-
-        if (!d || d.type === 'ERROR') {
-            alert(d.message || 'Failed to send OTP');
-            sendBtn.disabled = false;
-            sendBtn.innerText = 'Send OTP';
-            return;
-        }
-
-        alert(d.message || 'OTP Sent');
-
+    .then(function (response) {
+        return response.json().then(function (data) {
+            if (!response.ok || !data || data.type !== 'OK') {
+                throw new Error(data && data.message ? data.message : 'Failed to send OTP');
+            }
+            return data;
+        });
+    })
+    .then(function (data) {
+        alert(data.message);
         let otpInput  = document.getElementById('id_otp');
         let otpLabel  = document.querySelector('label[for=\"id_otp\"]');
         let verifyBtn = document.getElementById('id_verifyotp');
-
         otpInput.style.setProperty('display', 'block', 'important');
         otpLabel.style.setProperty('display', 'block', 'important');
         verifyBtn.style.setProperty('display', 'inline-block', 'important');
-
-        // Disable mobile number field
-        let mobileField = document.getElementsByName('profile_field_mobile')[0];
-        if (mobileField) {
-            mobileField.value = mobileNum;
-            mobileField.readOnly = true;
-            mobileField.style.background = '#eee';
-        }
-
-        sendBtn.style.setProperty('display', 'none', 'important');
-    })
-    .catch(err => {
-        alert('API Error: ' + err);
+        otpInput.focus();
+        sendBtn.textContent = 'Resend OTP';
         sendBtn.disabled = false;
-        sendBtn.innerText = 'Send OTP';
+    })
+    .catch(function (error) {
+        alert(error.message || 'Unable to send OTP. Please try again later.');
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send OTP';
     });
 };
 
@@ -178,44 +165,42 @@ window.verifyOTP = function () {
 
     let email = document.getElementById('id_email').value;
     let otp   = document.getElementById('id_otp').value;
-
     if (!otp) { alert('Enter OTP'); return; }
 
-    fetch('/api/verify_otp', {
+    let verifyBtn = document.getElementById('id_verifyotp');
+    verifyBtn.disabled = true;
+    let baseUrl = M.cfg.wwwroot.replace(/\\/$/, '');
+    fetch(baseUrl + '/api/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({
             email: email,
-            otp: otp
+            otp: otp,
+            sesskey: M.cfg.sesskey
         })
     })
-    .then(r => r.json())
-    .then(d => {
-
-        alert(d.message);
-
-        if (d.type === 'OK') {
-
-            let submitBtn = document.querySelector('input[type=submit]');
-            if (submitBtn) submitBtn.disabled = false;
-
-            // Hide OTP elements
-            document.getElementById('id_otp').style.setProperty('display', 'none', 'important');
-            document.querySelector('label[for=\"id_otp\"]').style.setProperty('display', 'none', 'important');
-            document.getElementById('id_verifyotp').style.setProperty('display', 'none', 'important');
-
-            // Hide send otp also
-            let sendBtn = document.getElementById('id_sendotp');
-            if (sendBtn) sendBtn.style.setProperty('display', 'none', 'important');
-
-            // Mobile stays disabled forever
-            let mobileField = document.getElementsByName('profile_field_mobile')[0];
-            if (mobileField) mobileField.readOnly = true;
-
-            window.__otp_verified = true;
-        }
+    .then(function (response) {
+        return response.json().then(function (data) {
+            if (!response.ok || !data || data.type !== 'OK') {
+                throw new Error(data && data.message ? data.message : 'OTP verification failed');
+            }
+            return data;
+        });
     })
-    .catch(err => alert('API Error: ' + err));
+    .then(function (data) {
+        alert(data.message);
+        let submitBtn = document.getElementById('id_submitbutton');
+        if (submitBtn) submitBtn.disabled = false;
+        document.getElementById('id_otp').style.setProperty('display', 'none', 'important');
+        document.querySelector('label[for=\"id_otp\"]').style.setProperty('display', 'none', 'important');
+        document.getElementById('id_verifyotp').style.setProperty('display', 'none', 'important');
+        document.getElementById('id_sendotp').style.setProperty('display', 'none', 'important');
+    })
+    .catch(function (error) {
+        alert(error.message || 'Unable to verify OTP. Please try again.');
+        verifyBtn.disabled = false;
+    });
 };
 
 ");
@@ -230,9 +215,18 @@ window.verifyOTP = function () {
 
         $errors = parent::validation($data, $files);
 
-        // if (empty($_SESSION['signup_otp_verified'][$data['email']])) {
-        //     $errors['otp'] = 'Please verify OTP before creating account.';
-        // }
+        global $SESSION;
+        $email = isset($data['email']) && is_string($data['email']) ?
+                core_text::strtolower(trim($data['email'])) : '';
+        $emailkey = hash('sha256', $email);
+        $verifieduntil = isset($SESSION->signupotpverified) && is_array($SESSION->signupotpverified) &&
+                isset($SESSION->signupotpverified[$emailkey]) ? $SESSION->signupotpverified[$emailkey] : 0;
+        if ($verifieduntil <= time()) {
+            if (isset($SESSION->signupotpverified) && is_array($SESSION->signupotpverified)) {
+                unset($SESSION->signupotpverified[$emailkey]);
+            }
+            $errors['otp'] = 'Please verify your email address with the OTP before creating your account.';
+        }
 
         $errors += signup_validate_data($data, $files);
         return $errors;

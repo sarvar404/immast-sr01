@@ -67,6 +67,11 @@ $emailid  = theme_immast_get_setting('emailid');
 $phoneno  = theme_immast_get_setting('phoneno');
 $copyrightfooter = theme_immast_get_setting('copyright_footer');
 $infolink = theme_immast_infolink();
+$sitehost = strtolower((string)parse_url($CFG->wwwroot, PHP_URL_HOST));
+$islocalmoodle = in_array($sitehost, ['localhost', '127.0.0.1', '::1'], true);
+$homeurl = $islocalmoodle
+    ? rtrim($CFG->wwwroot, '/') . '/?redirect=0'
+    : 'https://immast.org/';
 
 $sinfo = get_string('info', 'theme_immast');
 $scontactus = get_string('contact_us', 'theme_immast');
@@ -138,6 +143,8 @@ $templatecontext = [
     "s_phone" => $sphone,
     "s_email" => $semail,
     "s_get_social" => $sgetsocial,
+    "homeurl" => $homeurl,
+    "islocalmoodle" => $islocalmoodle,
     "url" => $url,
     "contact" => $contact,
     "footerall" => $footerall,

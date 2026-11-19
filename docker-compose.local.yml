@@ -1,0 +1,28 @@
+services:
+  moodle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: immast-local-moodle-php:7.3
+    container_name: immast-local-moodle-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3010:80"
+    volumes:
+      - .:/var/www/html
+      - type: bind
+        source: C:/moodledata
+        target: /var/www/moodledata
+    environment:
+      DB_HOST: db
+      MOODLE_DATAROOT: /var/www/moodledata
+      MOODLE_URL: http://localhost:3010
+      MOODLE_SSLPROXY: "0"
+      MOODLE_COOKIE_DOMAIN: localhost
+    networks:
+      - moodle-local
+
+networks:
+  moodle-local:
+    external: true
+    name: immast-local-network

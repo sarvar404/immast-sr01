@@ -4,6 +4,7 @@ var otpId = "fitem_id_profile_field_otp_num";
 var gen_otp_button_id = "gen_otp";
 var ver_otp = "ver_otp";
 var gen_otp_button;
+var moodleBaseUrl = (window.M && window.M.cfg && window.M.cfg.wwwroot) ? window.M.cfg.wwwroot.replace(/\/$/, '') : window.location.origin;
 var dobChekcInp = document.getElementById("id_profile_field_dob_enabled");
 var formData = {};
 var city = document.getElementById("id_city")
@@ -43,7 +44,7 @@ if ((dobChekcInp && (window.location.pathname === "/enrol/index.php"))) {
 
 function send_data(formData) {
     
-    url = "https://courses.immast.org/api/enroll_cap";
+    url = moodleBaseUrl + "/api/enroll_cap";
     console.log("sending data: ", formData)
     fetch(url, { method: 'POST', credentials: 'include', body: JSON.stringify({formdata:formData,id:document.getElementById("sessvar").value}) }).then((res) => res.json()).then((resdata) => {
         console.log(resdata)
@@ -187,25 +188,31 @@ function gen_otp_funct() {
 
 function get_otp_handler(){
 	
-	numInp = document.getElementById("id_profile_field_mobile_num");
-    email = document.getElementById("id_email")
+	var numInp = document.getElementById("id_profile_field_mobile_num");
+    var email = document.getElementById("id_email")
     gen_otp_button = document.getElementById(gen_otp_button_id)
     // gen_otp_button.setAttribute('disabled', 'disabled')
-    var url = "https://courses.immast.org/api/send_otp"
-    console.log(numInp.value)
-    console.log(email.value)
+    var url = moodleBaseUrl + "/api/send_otp.php"
     if (numInp.value !== "" && email.value !== "") {
-        var countryName = country[country.selectedIndex].text
         gen_otp_button.innerText = "Resend OTP"
-        numInp.setAttribute('readonly', 'readonly');
         let xhr = new XMLHttpRequest();
-        xhr.open("post", url, async = true)
+        xhr.open("POST", url, true)
         xhr.withCredentials = true
-        xhr.send(JSON.stringify({ mobileNum: numInp.value,"email":email.value,"country":countryName }))
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ email: email.value, sesskey: M.cfg.sesskey }))
 
         xhr.onload = function () {
-            if (xhr.status == 200) {
+            var response;
+            try {
+                response = JSON.parse(xhr.responseText);
+            } catch (error) {
+                alert("Invalid response from OTP service.");
+                return;
+            }
+            if (xhr.status === 200 && response.type === "OK") {
                 alert("OTP Sent Successfully.")
+            } else {
+                alert(response.message || "Unable to send OTP.");
             }
         }
     } else {
@@ -218,28 +225,35 @@ function get_otp_handler(){
 
 function verify_otp() {
     var ver_inp = document.getElementById("id_profile_field_otpnum")
-    if (ver_inp.value !== null) {
-        otp = ver_inp.value;
-        url = "https://courses.immast.org/api/verify_otp"
+    var email = document.getElementById("id_email")
+    if (ver_inp && ver_inp.value) {
+        var otp = ver_inp.value;
+        var url = moodleBaseUrl + "/api/verify_otp.php"
 
         let xhr = new XMLHttpRequest();
-        xhr.open("post", url, async = true)
+        xhr.open("POST", url, true)
         xhr.withCredentials = true
-        xhr.send(JSON.stringify({ "otp": otp }))
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ email: email.value, otp: otp, sesskey: M.cfg.sesskey }))
 
         xhr.onload = function () {
-            if (xhr.status == 200) {
-                if (xhr.responseText.includes('"type":"OK"')) {
-                    alert("Mobile/Email Number Verified");
-                    document.getElementById('id_submitbutton').removeAttribute('disabled', 'disabled')
-                    ver_inp.setAttribute('disabled', 'disabled')
-                }
-                else {
-                    alert("OTP is not correct.");
-                }
+            var response;
+            try {
+                response = JSON.parse(xhr.responseText);
+            } catch (error) {
+                alert("Invalid response from OTP service.");
+                return;
+            }
+            if (xhr.status === 200 && response.type === "OK") {
+                alert("Email address verified.");
+                document.getElementById('id_submitbutton').removeAttribute('disabled', 'disabled')
+                ver_inp.setAttribute('disabled', 'disabled')
+            } else {
+                alert(response.message || "OTP verification failed.");
             }
         }
-
+    } else {
+        alert("Enter OTP.");
     }
 
 }
@@ -312,7 +326,7 @@ function showHidePreferences(e) {
 */
 
 function setCountries(){
-    url = "https://courses.immast.org/geoapi/child_geo_name"
+    url = moodleBaseUrl + "/geoapi/child_geo_name"
     fetch(url,{method:"GET"}).then(res=> res.json()).then(res =>{
         // country.innerHTML += "<option value=''>Select Country</option>"
         Array.from(res["Records"]).forEach((ele)=>{
@@ -324,7 +338,7 @@ function setCountries(){
 }
 
 function setState(geo_id){
-    url = `https://courses.immast.org/geoapi/child_geo_name?geo_id=${geo_id}`
+    url = `${moodleBaseUrl}/geoapi/child_geo_name?geo_id=${geo_id}`
     fetch(url,{method:"GET"}).then(res=>res.json()).then(res =>{
         state.innerHTML = "<option value=''>Select State</option>"
         city.innerHTML = "<option value=''>Select State</option>"
@@ -338,7 +352,7 @@ function setState(geo_id){
 }
 
 function setCity(geo_id){
-    url = `https://courses.immast.org/geoapi/child_geo_name?geo_id=${geo_id}`
+    url = `${moodleBaseUrl}/geoapi/child_geo_name?geo_id=${geo_id}`
     fetch(url,{method:"GET"}).then(res=>res.json()).then(res =>{
         city.innerHTML = "<option value=''>Select City</option>"
         Array.from(res["Records"]).forEach(ele => {

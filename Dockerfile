@@ -1,7 +1,10 @@
 FROM php:7.3-apache
 
 # Install required packages and PHP extensions for Moodle and PostgreSQL
-RUN apt-get update && apt-get install -y \
+RUN sed -i -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+    -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list \
+    && apt-get -o Acquire::Check-Valid-Until=false update \
+    && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \

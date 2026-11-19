@@ -11,8 +11,7 @@ if (right_to_left()) {
 }
 
 $courserenderer = $PAGE->get_renderer('core', 'course');
-$doc_root = $_SERVER['DOCUMENT_ROOT'] ;
-require_once("$doc_root/immast-custom/course_calendar_func.php");
+require_once(dirname(__DIR__, 3) . '/immast-custom/course_calendar_func.php');
 
 
 $res  =  course_calendar_data();

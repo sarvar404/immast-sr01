@@ -1,0 +1,26 @@
+
+FROM php:7.4-apache
+
+RUN set -eux; \
+    for file in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do \
+        if [ -f "$file" ]; then \
+            sed -i \
+                -e 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' \
+                -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+                -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+                "$file"; \
+        fi; \
+    done; \
+    apt-get -o Acquire::Check-Valid-Until=false update; \
+    apt-get install -y --no-install-recommends \
+        libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
+        libzip-dev libicu-dev libpq-dev libxml2-dev \
+        libcurl4-openssl-dev libonig-dev unzip; \
+    docker-php-ext-configure gd --with-freetype --with-jpeg; \
+    docker-php-ext-install -j"$(nproc)" \
+        pgsql pdo_pgsql intl gd soap zip curl mbstring; \
+    a2enmod rewrite; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN printf 'memory_limit=512M\nmax_execution_time=300\nmax_input_vars=5000\n' \
+    > /usr/local/etc/php/conf.d/moodle.ini
